@@ -1,6 +1,6 @@
 <h2>Catalogo de productos!</h2>
 
-<catalog [products]="products" />
+<catalog [products]="products" (productEventEmitter)="OnAddCart($event)" />
 
 @if (items.length) {
   <cart [items]="items" />
