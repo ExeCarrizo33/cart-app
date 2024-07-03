@@ -26,22 +26,22 @@ export class CartAppComponent implements OnInit {
   ngOnInit(): void {
     this.products = this.service.findAll();
     this.items = JSON.parse(sessionStorage.getItem('cart') || '[]');
-    this.calculateTotal();
+    // this.calculateTotal();
   }
 
   onDelete(id: number) {
     this.items = this.items.filter((item) => item.product.id != id);
-    this.calculateTotal();
-    this.saveSession();
+    // this.calculateTotal();
+    // this.saveSession();
   }
 
-  calculateTotal() {
-    this.total = this.items.reduce(
-      (accumaltor, item) => accumaltor + item.quantity * item.product.price,
-      0
-    );
-    this.saveSession();
-  }
+  // calculateTotal() {
+  //   this.total = this.items.reduce(
+  //     (accumaltor, item) => accumaltor + item.quantity * item.product.price,
+  //     0
+  //   );
+
+  // }
 
   OnAddCart(product: Product) {
     const hasItem = this.items.find((item) => {
@@ -60,15 +60,15 @@ export class CartAppComponent implements OnInit {
     } else {
       this.items = [...this.items, { product: { ...product }, quantity: 1 }];
     }
-    this.calculateTotal();
-    this.saveSession();
+    // this.calculateTotal();
+    // this.saveSession();
   }
 
-  saveSession() {
-    sessionStorage.setItem('cart', JSON.stringify(this.items));
-  }
+  // saveSession() {
+  //   sessionStorage.setItem('cart', JSON.stringify(this.items));
+  // }
 
-  openCloseCart() {
-    this.showCart = !this.showCart;
-  }
+   openCloseCart() {
+     this.showCart = !this.showCart;
+   }
 }
