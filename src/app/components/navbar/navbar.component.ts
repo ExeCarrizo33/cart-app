@@ -2,21 +2,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CartItem } from '../../models/cartItem';
 
 @Component({
-  selector: 'cart',
+  selector: 'navbar',
   standalone: true,
   imports: [],
-  templateUrl: './cart.component.html',
+  templateUrl: './navbar.component.html',
+
 })
-export class CartComponent {
+export class NavbarComponent {
 
   @Input() items: CartItem[] = [];
 
-  @Input() total:number = 0;
+  @Output() openEvent= new EventEmitter();
 
-  @Output() idProduct = new EventEmitter();
-
-  onDelete(id: number){
-      this.idProduct.emit(id)
+  openCart(){
+    this.openEvent.emit();
   }
-
 }
