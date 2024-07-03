@@ -2,26 +2,24 @@ import { Component, OnInit, Output } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product';
 import { CatalogComponent } from './catalog/catalog.component';
-import { CartComponent } from './cart/cart.component';
 import { CartItem } from '../models/cartItem';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ModalCartComponent } from './modal-cart/modal-cart.component';
 
 @Component({
   selector: 'cart-app',
   standalone: true,
-  imports: [CatalogComponent,CartComponent,NavbarComponent],
+  imports: [CatalogComponent, ModalCartComponent, NavbarComponent],
   templateUrl: './cart-app.component.html',
 })
 export class CartAppComponent implements OnInit {
-
   products: Product[] = [];
 
   items: CartItem[] = [];
 
-  total:number = 0;
+  total: number = 0;
 
   showCart: boolean = false;
-
 
   constructor(private service: ProductService) {}
 
@@ -31,43 +29,46 @@ export class CartAppComponent implements OnInit {
     this.calculateTotal();
   }
 
-  onDelete(id:number){
-    this.items = this.items.filter(item => item.product.id != id);
+  onDelete(id: number) {
+    this.items = this.items.filter((item) => item.product.id != id);
     this.calculateTotal();
     this.saveSession();
   }
 
-  calculateTotal(){
-    this.total = this.items.reduce((accumaltor, item) => accumaltor + item.quantity * item.product.price, 0);
+  calculateTotal() {
+    this.total = this.items.reduce(
+      (accumaltor, item) => accumaltor + item.quantity * item.product.price,
+      0
+    );
     this.saveSession();
   }
 
-  OnAddCart(product: Product){
-    const hasItem = this.items.find(item => {
+  OnAddCart(product: Product) {
+    const hasItem = this.items.find((item) => {
       return item.product.id == product.id;
-    })
+    });
     if (hasItem) {
-      this.items = this.items.map(item => {
+      this.items = this.items.map((item) => {
         if (item.product.id == product.id) {
           return {
-            ... item, quantity: item.quantity + 1
-          }
+            ...item,
+            quantity: item.quantity + 1,
+          };
         }
         return item;
-      })
-    }else {
-      this.items = [... this.items, {product:{... product}, quantity:1}];
+      });
+    } else {
+      this.items = [...this.items, { product: { ...product }, quantity: 1 }];
     }
     this.calculateTotal();
     this.saveSession();
-
   }
 
-  saveSession(){
+  saveSession() {
     sessionStorage.setItem('cart', JSON.stringify(this.items));
   }
 
-  openCart(){
+  openCloseCart() {
     this.showCart = !this.showCart;
   }
 }
