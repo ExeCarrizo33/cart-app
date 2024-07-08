@@ -26,7 +26,7 @@ export class CartAppComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = JSON.parse(sessionStorage.getItem('cart') || '[]');
-    this.calculateTotal();
+    //this.calculateTotal();
     this.onDelete();
     this.OnAddCart();
   }
@@ -43,12 +43,12 @@ export class CartAppComponent implements OnInit {
         confirmButtonText: 'Si, eliminar!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.items = this.items.filter((item) => item.product.id != id);
+
           if (this.items.length) {
             sessionStorage.removeItem('cart');
             sessionStorage.clear;
           }
-          this.calculateTotal();
+          // this.calculateTotal();
           this.saveSession();
 
           this.router
@@ -69,32 +69,11 @@ export class CartAppComponent implements OnInit {
     });
   }
 
-  calculateTotal() {
-    this.total = this.items.reduce(
-      (accumaltor, item) => accumaltor + item.quantity * item.product.price,
-      0
-    );
-  }
 
   OnAddCart() {
     this.sharingDataService.productEventEmitter.subscribe((product) => {
-      const hasItem = this.items.find((item) => {
-        return item.product.id == product.id;
-      });
-      if (hasItem) {
-        this.items = this.items.map((item) => {
-          if (item.product.id == product.id) {
-            return {
-              ...item,
-              quantity: item.quantity + 1,
-            };
-          }
-          return item;
-        });
-      } else {
-        this.items = [...this.items, { product: { ...product }, quantity: 1 }];
-      }
-      this.calculateTotal();
+
+      //this.calculateTotal();
       this.saveSession();
       this.router.navigate(['/cart'], {
         state: { items: this.items, total: this.total },
